@@ -16,14 +16,20 @@ echo "Script started" >> $logpath
 echo "" >> $logpath
 
 # Check if both arguments are provided
-if [ $# -ne 2 ]; then
-    log_command echo "Usage: $0 <SPOKE_RG_NAME> <FRONT_DOOR_FQDN>"
+if [ $# -ne 5 ]; then
+    log_command echo "Usage: $0 <SPOKE_RG_NAME> <FRONT_DOOR_FQDN> <SP_APP_ID> <SP_PASSWORD> <TENANT_ID>"
     exit 1
 fi
 
 # Set variables from command-line arguments
 SPOKE_RG_NAME=$1
 FRONT_DOOR_FQDN=$2
+SP_APP_ID=$3
+SP_PASSWORD=$4
+TENANT_ID=$5
+
+log_command echo "Logging in using the service principal..."
+log_command az login --service-principal -u $SP_APP_ID -p $SP_PASSWORD --tenant $TENANT_ID
 
 log_command echo "Setting up environment..."
 log_command AROCLUSTER=$(az aro list -g $SPOKE_RG_NAME --query "[0].name" -o tsv)
