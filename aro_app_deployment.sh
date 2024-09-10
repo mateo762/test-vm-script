@@ -30,7 +30,7 @@ kubeadmin_password=$(az aro list-credentials --name $AROCLUSTER --resource-group
 oc login $apiServer -u kubeadmin -p $kubeadmin_password
 
 oc new-project contoso
-oc adm policy add-scc-to-user anyuid -z contoso
+oc adm policy add-scc-to-user anyuid -z default
 
 echo "Creating Deployment..."
 cat <<EOF | oc apply -f -
